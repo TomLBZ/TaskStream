@@ -16,15 +16,16 @@ public class Main {
         DataManager dm = new DataManager("./data/data.txt");
         ArrayList<Task> tasksData = dm.loadData();
 
-        System.out.println("Printing deadlines");
-        printDeadlines(tasksData);
+        //System.out.println("Printing deadlines");
+        //printDeadlines(tasksData);
 
-        System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
+        //System.out.println("Total number of deadlines: " + countDeadlines(tasksData));
 
         printDeadlinesUsingStreams(tasksData);
         for(Task t: filterByString(tasksData, "11")) {
             System.out.println(t);
         }
+        System.out.println("Total number of deadlines: " + countDeadlinesUsingStreams(tasksData));
     }
 
     private static int countDeadlines(ArrayList<Task> tasksData) {
@@ -37,10 +38,25 @@ public class Main {
         return count;
     }
 
+    private static int countDeadlinesUsingStreams(ArrayList<Task> tasksData) {
+        System.out.println("Calculating count using streams");
+        int count;
+        count = (int) tasksData.stream()
+                .filter(t -> t instanceof Deadline)
+                .count();
+        return count;
+    }
+
     public static void printData(ArrayList<Task> tasksData) {
         for (Task t : tasksData) {
             System.out.println(t);
         }
+    }
+
+    public static void printDataUsingStreams(ArrayList<Task> taskData) {
+        System.out.println("Printing data using streams");
+        taskData.stream()
+                .forEach(System.out::println);
     }
 
     public static void printDeadlines(ArrayList<Task> tasksData) {
@@ -52,6 +68,7 @@ public class Main {
     }
 
     private static void printDeadlinesUsingStreams(ArrayList<Task> tasksData) {
+        System.out.println("Printing deadlines using streams");
         tasksData.stream()
                 .filter(s -> s instanceof Deadline)
                 .sorted((a, b) -> a.getDescription().toLowerCase().compareTo(b.getDescription().toLowerCase()))
